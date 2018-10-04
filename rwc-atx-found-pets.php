@@ -20,7 +20,7 @@
 function rwc_atx_found_pets_shortcode( $attributes = array() ) {
 
 	$attributes = shortcode_atts( array(
-		'app_token' => 'xxxx',
+		'app_token' => '',
 		'limit' => 6,
 	), $attributes, 'found_pets' );
 
