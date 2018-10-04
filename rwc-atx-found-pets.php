@@ -17,3 +17,7 @@
  * Domain Path:       /languages
  */
 
+function rwc_atx_found_pets_shortcode() {
+	echo 'this is a shortcode';
+}
+add_shortcode( 'found_pets', 'rwc_atx_found_pets_shortcode' );
