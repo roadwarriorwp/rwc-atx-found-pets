@@ -17,7 +17,45 @@
  * Domain Path:       /languages
  */
 
-function rwc_atx_found_pets_shortcode() {
-	echo 'this is a shortcode';
+function rwc_atx_found_pets_shortcode( $attributes = array() ) {
+
+	$attributes = shortcode_atts( array(
+		'app_token' => 'iWJgrnuZdE98CfKYxKwwuZsQL',
+	), $attributes, 'found_pets' );
+
+
+	$app_token = $attributes['app_token'];
+	$request_uri = 'https://data.austintexas.gov/resource/hye6-gvq2.json?$$app_token=' . $app_token;
+	$request = wp_remote_get( $request_uri );
+		if( is_wp_error( $request ) || '200' != wp_remote_retrieve_response_code( $request ) ) {
+			return;
+		}
+
+		$pets = json_decode( wp_remote_retrieve_body( $request ) );
+		if( empty( $pets ) ) {
+			return;
+		}
+		echo '<div class="found-pets">';
+		foreach( $pets as $pet ) {
+			$found_date = strtotime( $pet->intake_date );
+			$imageurl = esc_url_raw( $pet->image->url);
+			//$street = $pet->location->human_address->address;
+			$type = $pet->type;
+			$breed = $pet->looks_like;
+			$sex = $pet->sex;
+			$color = $pet->color;
+			$age = $pet->age;
+			?>
+				<div class="pet" style="margin-bottom:20px;">
+					<h3><?php echo $color . ' ' . $sex . ' ' . $type; ?></h3>
+					<p><strong>Looks Like A:</strong> <?php echo $breed; ?></br>
+					<strong>Estimated Age:</strong> <?php echo $age; ?></br>
+					<strong>Found Date:</strong> <?php echo date( 'F j, Y', $found_date ); ?></p>
+					<button href="<?php echo $imageurl; ?>" target="_blank" class="pet-photo">See Pet Photo</button>
+				</div>
+			<?php
+		}
+		echo '</div>';
 }
+	
 add_shortcode( 'found_pets', 'rwc_atx_found_pets_shortcode' );
