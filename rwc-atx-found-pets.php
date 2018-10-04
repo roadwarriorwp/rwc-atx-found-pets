@@ -37,6 +37,7 @@ function rwc_atx_found_pets_shortcode( $attributes = array() ) {
 		if( empty( $pets ) ) {
 			return;
 		}
+		ob_start();
 		echo '<div class="found-pets">';
 		foreach( $pets as $pet ) {
 			$found_date = strtotime( $pet->intake_date );
@@ -47,6 +48,7 @@ function rwc_atx_found_pets_shortcode( $attributes = array() ) {
 			$sex = $pet->sex;
 			$color = $pet->color;
 			$age = $pet->age;
+
 			?>
 				<div class="pet" style="margin-bottom:20px;">
 					<h3><?php echo $color . ' ' . $sex . ' ' . $type; ?></h3>
@@ -58,6 +60,7 @@ function rwc_atx_found_pets_shortcode( $attributes = array() ) {
 			<?php
 		}
 		echo '</div>';
+		return ob_get_clean();
 }
 	
 add_shortcode( 'found_pets', 'rwc_atx_found_pets_shortcode' );
