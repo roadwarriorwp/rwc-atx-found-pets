@@ -21,11 +21,13 @@ function rwc_atx_found_pets_shortcode( $attributes = array() ) {
 
 	$attributes = shortcode_atts( array(
 		'app_token' => 'iWJgrnuZdE98CfKYxKwwuZsQL',
+		'limit' => 6,
 	), $attributes, 'found_pets' );
 
 
 	$app_token = $attributes['app_token'];
-	$request_uri = 'https://data.austintexas.gov/resource/hye6-gvq2.json?$$app_token=' . $app_token;
+	$limit = $attributes['limit'];
+	$request_uri = 'https://data.austintexas.gov/resource/hye6-gvq2.json?$$app_token=' . $app_token . '&$limit=' . $limit;
 	$request = wp_remote_get( $request_uri );
 		if( is_wp_error( $request ) || '200' != wp_remote_retrieve_response_code( $request ) ) {
 			return;
